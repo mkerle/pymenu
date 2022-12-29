@@ -1,0 +1,4 @@
+
+class PymenuArgumentException(Exception):
+    pass
+
