@@ -1,4 +1,4 @@
-import re
+from pymenu.consoleColours import ConsoleColours
 
 class PyMenu(object):
 
@@ -107,13 +107,15 @@ class PyMenu(object):
 
     def displayMenu(self):
 
-        print('\n %s' % (self.title))
+        print(ConsoleColours.HEADER + ConsoleColours.UNDERLINE + '\n%s' % (self.title) + ConsoleColours.ENDC)
 
         if (self.headerCallback is not None):
+            headerText = ''
             if (type(self.headerCallbackArgs == tuple)):
-                print(' %s\n' % (self.headerCallback(*self.headerCallbackArgs, **self.headerCallbackKwargs)))
+                headerText = self.headerCallback(*self.headerCallbackArgs, **self.headerCallbackKwargs)                
             else:
-                print(' %s\n' % (self.headerCallback()))
+                headerText = self.headerCallback()
+            print(' %s\n' % (headerText))
 
         for option in self.options:
 
