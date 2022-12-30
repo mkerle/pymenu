@@ -29,4 +29,5 @@ menuOptions = [
 menu = PyMenu()
 menu.setMenuOptions(menuOptions)
 menu.setFunctionArgs(5)
-menu.displayMenu()
+
+menu.doMenuOnce(exitOnError=True)

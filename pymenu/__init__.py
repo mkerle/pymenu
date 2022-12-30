@@ -4,8 +4,11 @@ class PyMenu(object):
 
     DEFAULT_PROMPT = 'Enter choice: '
     DEFAULT_UNKNOWN_MENU_OPTION = 'Unknown menu option!'
+    DEFAULT_DISPLAY_CANCEL_OPTION = False
+    DEFAULT_CANCEL_OPTION_ID = 'C'
+    DEFAULT_CANCEL_OPTION_MSG = 'Cancel'
 
-    def __init__(self, prompt=DEFAULT_PROMPT, unknownMenuOption=DEFAULT_UNKNOWN_MENU_OPTION):
+    def __init__(self, prompt=DEFAULT_PROMPT, unknownMenuOption=DEFAULT_UNKNOWN_MENU_OPTION, includeCancelOption=DEFAULT_DISPLAY_CANCEL_OPTION):
         
         self.prompt = prompt
         self.unknownMenuOption = unknownMenuOption
@@ -13,10 +16,24 @@ class PyMenu(object):
         self.args = None
         self.kwargs = None
 
+        self.includeCancelOption = includeCancelOption
+        self.cancelOptionID = self.DEFAULT_CANCEL_OPTION_ID
+        self.cancelOptionMsg = self.DEFAULT_CANCEL_OPTION_MSG
+
+        self.exitMenu = False
+
     def setFunctionArgs(self, *args, **kwargs):
 
         self.args = args
         self.kwargs = kwargs
+
+    def overrideCancelOption(self, id, text):
+        self.cancelOptionID = id
+        self.cancelOptionMsg = text
+
+    def exitMenuHandler(self):
+
+        self.exitMenu = True
 
     def _parseOption(self, option):
 
@@ -46,6 +63,9 @@ class PyMenu(object):
 
         self.options = options
 
+        if (self.includeCancelOption):
+            self.options.append( {'id' : self.cancelOptionID, 'text' : self.cancelOptionMsg, 'func' : self.exitMenuHandler, 'args' : False })
+
     def doPrompt(self):
 
         return input('\n%s' % (self.prompt))
@@ -59,19 +79,20 @@ class PyMenu(object):
         return choice
 
     def handleMenuChoice(self, choice):
-
-        foundOption = False
+        
         for option in self.options:
             if (choice == option['id']):
-                foundOption = True
+                
                 if (option['args']):
                     option['func'](*self.args, **self.kwargs)
                 else:
                     option['func']()
-                break
+                
+                return True
         
-        if (not foundOption):
-            self.displayUnknownMenuOption()
+        self.displayUnknownMenuOption()
+        return False
+            
 
     def displayMenu(self):
 
@@ -84,4 +105,17 @@ class PyMenu(object):
 
         parsedChoice = self.parseMenuChoice(choice)
 
-        self.handleMenuChoice(parsedChoice)
+        return self.handleMenuChoice(parsedChoice)
+
+    def doMenuOnce(self, exitOnError=False):
+
+        self.exitMenu = False
+        
+        if (exitOnError):
+            self.displayMenu()
+        else:
+            while (not self.displayMenu() or not (self.includeCancelOption and self.exitMenu)):
+                pass
+
+
+
