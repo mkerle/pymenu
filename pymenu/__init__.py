@@ -24,6 +24,8 @@ class PyMenu(object):
         self.exitMenu = False
 
         self.headerCallback = None
+        self.headerCallbackArgs = None
+        self.headerCallbackKwargs = None
 
     def setFunctionArgs(self, *args, **kwargs):
 
@@ -38,9 +40,11 @@ class PyMenu(object):
 
         self.exitMenu = True
 
-    def setHeaderCallback(self, callback):
+    def setHeaderCallback(self, callback, *args, **kwargs):
 
         self.headerCallback = callback
+        self.headerCallbackArgs = args
+        self.headerCallbackKwargs = kwargs
 
     def _parseOption(self, option):
 
@@ -106,7 +110,10 @@ class PyMenu(object):
         print('\n %s' % (self.title))
 
         if (self.headerCallback is not None):
-            print(' %s\n' % (self.headerCallback()))
+            if (type(self.headerCallbackArgs == tuple)):
+                print(' %s\n' % (self.headerCallback(*self.headerCallbackArgs, **self.headerCallbackKwargs)))
+            else:
+                print(' %s\n' % (self.headerCallback()))
 
         for option in self.options:
 

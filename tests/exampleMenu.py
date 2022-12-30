@@ -17,9 +17,9 @@ class menuHandler(object):
 
         print('x=%d' % (x))
 
-    def headerCallback(self):
+    def headerCallback(self, x=2):
 
-        return 'This is the header callback text'
+        return 'This is the header callback text (x=%d)' % (x)
 
 
 testHandler = menuHandler()
@@ -33,6 +33,6 @@ menuOptions = [
 menu = PyMenu()
 menu.setMenuOptions(menuOptions)
 menu.setFunctionArgs(5)
-menu.setHeaderCallback(testHandler.headerCallback)
+menu.setHeaderCallback(testHandler.headerCallback, x=5)
 
 menu.doMenuOnce(exitOnError=True)
