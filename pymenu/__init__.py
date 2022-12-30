@@ -114,7 +114,7 @@ class PyMenu(object):
         if (exitOnError):
             self.displayMenu()
         else:
-            while (not self.displayMenu() or not (self.includeCancelOption and self.exitMenu)):
+            while (not (self.includeCancelOption and self.exitMenu) or not self.displayMenu()):
                 pass
 
 
