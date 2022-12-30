@@ -8,8 +8,9 @@ class PyMenu(object):
     DEFAULT_CANCEL_OPTION_ID = 'C'
     DEFAULT_CANCEL_OPTION_MSG = 'Cancel'
 
-    def __init__(self, prompt=DEFAULT_PROMPT, unknownMenuOption=DEFAULT_UNKNOWN_MENU_OPTION, includeCancelOption=DEFAULT_DISPLAY_CANCEL_OPTION):
+    def __init__(self, title='Menu', prompt=DEFAULT_PROMPT, unknownMenuOption=DEFAULT_UNKNOWN_MENU_OPTION, includeCancelOption=DEFAULT_DISPLAY_CANCEL_OPTION):
         
+        self.title = title
         self.prompt = prompt
         self.unknownMenuOption = unknownMenuOption
 
@@ -21,6 +22,8 @@ class PyMenu(object):
         self.cancelOptionMsg = self.DEFAULT_CANCEL_OPTION_MSG
 
         self.exitMenu = False
+
+        self.headerCallback = None
 
     def setFunctionArgs(self, *args, **kwargs):
 
@@ -34,6 +37,10 @@ class PyMenu(object):
     def exitMenuHandler(self):
 
         self.exitMenu = True
+
+    def setHeaderCallback(self, callback):
+
+        self.headerCallback = callback
 
     def _parseOption(self, option):
 
@@ -96,7 +103,11 @@ class PyMenu(object):
 
     def displayMenu(self):
 
-        print('\n')
+        print('\n %s' % (self.title))
+
+        if (self.headerCallback is not None):
+            print(' %s\n' % (self.headerCallback()))
+
         for option in self.options:
 
             print(' [%s]\t%s' % (option.get('id', 'ERR!'), option.get('text', 'ERR!')))
