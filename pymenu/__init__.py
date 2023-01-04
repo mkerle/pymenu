@@ -1,4 +1,4 @@
-from pymenu.consoleColours import ConsoleColours
+import pytext
 
 class PyMenu(object):
 
@@ -107,7 +107,8 @@ class PyMenu(object):
 
     def displayMenu(self):
 
-        print(ConsoleColours.HEADER + ConsoleColours.UNDERLINE + '\n%s' % (self.title) + ConsoleColours.ENDC)
+        title = '\n<HEADER><UNDERLINE>%s</UNDERLINE></HEADER>' % (self.title)
+        print(pytext.getConsoleText(title))
 
         if (self.headerCallback is not None):
             headerText = ''
