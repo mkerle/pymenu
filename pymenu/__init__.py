@@ -141,7 +141,7 @@ class PyMenu(object):
     def doMenuLoop(self):
 
         self.exitMenu = False
-        while (not (self.includeCancelOption and self.exitMenu)):
+        while (not self.exitMenu):
             self.displayMenu()
 
 
