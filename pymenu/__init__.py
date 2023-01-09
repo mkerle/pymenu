@@ -73,7 +73,7 @@ class PyMenu(object):
         self.options = options
 
         if (self.includeCancelOption):
-            self.options.append( {'id' : self.cancelOptionID, 'text' : self.cancelOptionMsg, 'func' : self.exitMenuHandler, 'args' : False })
+            self.options.append( {'id' : self.cancelOptionID, 'text' : self.cancelOptionMsg, 'func' : self.exitMenuHandler, 'args' : [ ], 'kwargs' : { } })
 
     def doPrompt(self):
 
