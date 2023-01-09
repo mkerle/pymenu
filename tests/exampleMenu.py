@@ -26,13 +26,12 @@ testHandler = menuHandler()
 
 menuOptions = [
     { 'id' : '1', 'text' : 'Simple func (no params)', 'func' : testHandler.doOption1 },
-    { 'id' : '2', 'text' : 'Func with positional arg', 'func' : testHandler.doOption2, 'args' : True }
+    { 'id' : '2', 'text' : 'Func with positional arg', 'func' : testHandler.doOption2, 'args' : [5] }
 ]
 
 
 menu = PyMenu()
 menu.setMenuOptions(menuOptions)
-menu.setFunctionArgs(5)
 menu.setHeaderCallback(testHandler.headerCallback, x=5)
 
 menu.doMenuOnce(exitOnError=True)

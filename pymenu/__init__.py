@@ -27,11 +27,6 @@ class PyMenu(object):
         self.headerCallbackArgs = None
         self.headerCallbackKwargs = None
 
-    def setFunctionArgs(self, *args, **kwargs):
-
-        self.args = args
-        self.kwargs = kwargs
-
     def overrideCancelOption(self, id, text):
         self.cancelOptionID = id
         self.cancelOptionMsg = text
@@ -52,7 +47,10 @@ class PyMenu(object):
             if ('id' in option and 'text' in option and 'func' in option):
 
                 if ('args' not in option):
-                    option['args'] = False
+                    option['args'] = [ ]
+
+                if ('kwargs' not in option):
+                    option['kwargs'] = { }
 
                 return True
 
@@ -92,13 +90,9 @@ class PyMenu(object):
     def handleMenuChoice(self, choice):
         
         for option in self.options:
-            if (choice == option['id']):
-                
-                if (option['args']):
-                    option['func'](*self.args, **self.kwargs)
-                else:
-                    option['func']()
-                
+            if (choice == option['id']):                
+
+                option['func'](*option['args'], **option['kwargs'])
                 return True
         
         self.displayUnknownMenuOption()
